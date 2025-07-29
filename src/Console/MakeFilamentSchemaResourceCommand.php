@@ -65,6 +65,8 @@ class MakeFilamentSchemaResourceCommand extends Command
             }
         }
 
+        $this->validateStubs();
+
         // Selalu generate semuanya
         $this->generateFormSchema($name, $modelClass);
         $this->generateTableSchema($name, $modelClass);

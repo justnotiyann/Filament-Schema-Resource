@@ -2,8 +2,8 @@
 
 namespace Justnotiyann\FilamentSchemaResource;
 
-use Illuminate\Support\ServiceProvider;
 use Justnotiyann\FilamentSchemaResource\Console\MakeFilamentSchemaResourceCommand;
+use Illuminate\Support\ServiceProvider;
 
 class FilamentSchemaResourceServiceProvider extends ServiceProvider
 {

@@ -16,10 +16,23 @@ composer update justnotiyann/filament-schema-resource
 php artisan vendor:publish --tag=filament-schema-stubs
 ```
 
+1. ### 🔁 Bagaimana cara agar package nya ngga usah pake dev bisa diinstall
 
+Commit dulu perubahanmu:
 
-1. Bagaimana cara agar package nya ngga usah pake dev bisa diinstall
+```bash
+git add .
+git commit -m "feat: support auto-detect foreign key relationship"
+git push origin main
+```
 
-2. Bagaimana cara agar autoformat (Untuk local development)
+Buat tag versi baru
 
-3. Bagiamana cara agar stubs itu ngga usah di publish.
+```bash
+git tag v1.1.0 # ubah ini dengan tag terakhir
+git push origin v1.1.0 # ubah ini dengan tag terakhir
+```
+
+1. Bagaimana cara agar autoformat (Untuk local development)
+
+2. Bagiamana cara agar stubs itu ngga usah di publish.
