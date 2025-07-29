@@ -42,13 +42,14 @@ class MakeFilamentSchemaResourceCommand extends Command
         ];
 
         foreach ($requiredStubs as $stub) {
-            $stubPath = __DIR__ . "/../stubs/{$stub}";
+            $stubPath = __DIR__ . "/../stubs/filament-resource/{$stub}";
 
             if (! $this->files->exists($stubPath)) {
                 throw new \RuntimeException("Stub file missing: {$stubPath}");
             }
         }
     }
+
 
 
     public function handle(): int
