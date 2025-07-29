@@ -1,9 +1,9 @@
 <?php
 
-namespace Iyan\FilamentSchemaResource;
+namespace Justnotiyann\FilamentSchemaResource;
 
 use Illuminate\Support\ServiceProvider;
-use Iyan\FilamentSchemaResource\Console\MakeFilamentSchemaResourceCommand;
+use Justnotiyann\FilamentSchemaResource\Console\MakeFilamentSchemaResourceCommand;
 
 class FilamentSchemaResourceServiceProvider extends ServiceProvider
 {

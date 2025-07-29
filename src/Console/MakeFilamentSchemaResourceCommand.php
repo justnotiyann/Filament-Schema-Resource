@@ -1,6 +1,6 @@
 <?php
 
-namespace Iyan\FilamentSchemaResource\Console;  // <- PENTING: Namespace harus ini!
+namespace Justnotiyann\FilamentSchemaResource\Console;  // <- PENTING: Namespace harus ini!
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -23,6 +23,26 @@ class MakeFilamentSchemaResourceCommand extends Command
     {
         parent::__construct();
     }
+
+    protected function validateStubs(): void
+    {
+        $requiredStubs = [
+            'form-schema.stub',
+            'table-schema.stub',
+            'resource.stub',
+            'list-page.stub',
+            'create-page.stub',
+            'edit-page.stub',
+        ];
+
+        foreach ($requiredStubs as $stub) {
+            $stubPath = base_path("stubs/filament-resource/{$stub}");
+            if (! $this->files->exists($stubPath)) {
+                throw new \RuntimeException("Stub file missing: {$stubPath}");
+            }
+        }
+    }
+
 
     public function handle(): int
     {
@@ -62,9 +82,10 @@ class MakeFilamentSchemaResourceCommand extends Command
 
     protected function getModelColumns(string $modelClass): array
     {
-        if (! class_exists($modelClass)) {
+        if (! class_exists($modelClass) || ! is_subclass_of($modelClass, \Illuminate\Database\Eloquent\Model::class)) {
             return [];
         }
+
 
         try {
             $model = new $modelClass;
@@ -203,7 +224,7 @@ class MakeFilamentSchemaResourceCommand extends Command
         if (! $this->files->exists($stubPath)) {
             $this->error("Stub not found: {$stubPath}");
 
-            return '';
+            throw new \RuntimeException("Stub not found: {$stubPath}");
         }
 
         $stub = $this->files->get($stubPath);
@@ -218,6 +239,12 @@ class MakeFilamentSchemaResourceCommand extends Command
     protected function writeFile(string $path, string $content): void
     {
         $this->files->ensureDirectoryExists(dirname($path));
+
+        if ($this->files->exists($path) && ! $this->option('force')) {
+            $this->warn("⚠️  File already exists at: {$path} (use --force to overwrite)");
+            return;
+        }
+
         $this->files->put($path, $content);
     }
 }

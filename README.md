@@ -15,3 +15,11 @@ composer update justnotiyann/filament-schema-resource
 ```bash
 php artisan vendor:publish --tag=filament-schema-stubs
 ```
+
+
+
+1. Bagaimana cara agar package nya ngga usah pake dev bisa diinstall
+
+2. Bagaimana cara agar autoformat (Untuk local development)
+
+3. Bagiamana cara agar stubs itu ngga usah di publish.

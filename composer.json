@@ -11,6 +11,10 @@
         "schema"
     ],
     "homepage": "https://github.com/justnotiyann/filament-schema-resource",
+    "support": {
+        "issues": "https://github.com/justnotiyann/filament-schema-resource/issues",
+        "source": "https://github.com/justnotiyann/filament-schema-resource"
+    },
     "authors": [
         {
             "name": "justnotiyann",
@@ -19,18 +23,18 @@
     ],
     "autoload": {
         "psr-4": {
-            "Iyan\\FilamentSchemaResource\\": "src/"
+            "Justnotiyann\\FilamentSchemaResource\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Iyan\\FilamentSchemaResource\\Tests\\": "tests/"
+            "Justnotiyann\\FilamentSchemaResource\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Iyan\\FilamentSchemaResource\\FilamentSchemaResourceServiceProvider"
+                "Justnotiyann\\FilamentSchemaResource\\FilamentSchemaResourceServiceProvider"
             ]
         }
     },
@@ -46,15 +50,12 @@
         "phpunit/phpunit": "^10.0"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "post-autoload-dump": [
-            "@php ./vendor/bin/testbench package:discover --ansi"
-        ]
+        "test": "vendor/bin/phpunit"
     },
     "config": {
         "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    }
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
