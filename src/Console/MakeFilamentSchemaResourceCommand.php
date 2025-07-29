@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Iyan\FilamentSchemaResource\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -39,13 +39,19 @@ class MakeFilamentSchemaResourceCommand extends Command
             foreach ($existing as $file) {
                 if ($this->files->exists($file)) {
                     $this->error("❌ File already exists at: {$file}");
-
                     return Command::FAILURE;
                 }
             }
         }
 
-        // Selalu generate semuanya
+        // Check if stubs are published
+        if (!$this->stubsExist()) {
+            $this->error('❌ Stubs not found. Please publish them first:');
+            $this->line('php artisan vendor:publish --tag=filament-schema-stubs');
+            return Command::FAILURE;
+        }
+
+        // Generate all files
         $this->generateFormSchema($name, $modelClass);
         $this->generateTableSchema($name, $modelClass);
         $this->generateFilamentResource($name, $modelName);
@@ -60,9 +66,30 @@ class MakeFilamentSchemaResourceCommand extends Command
         return Command::SUCCESS;
     }
 
+    protected function stubsExist(): bool
+    {
+        $requiredStubs = [
+            'form-schema.stub',
+            'table-schema.stub',
+            'resource.stub',
+            'list-page.stub',
+            'create-page.stub',
+            'edit-page.stub',
+        ];
+
+        foreach ($requiredStubs as $stub) {
+            if (!$this->files->exists(base_path("stubs/filament-resource/{$stub}"))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     protected function getModelColumns(string $modelClass): array
     {
         if (! class_exists($modelClass)) {
+            $this->warn("⚠️  Model {$modelClass} tidak ditemukan.");
             return [];
         }
 
@@ -72,16 +99,20 @@ class MakeFilamentSchemaResourceCommand extends Command
             $connection = $model->getConnectionName() ?? config('database.default');
             $schema = Schema::connection($connection);
 
+            if (!$schema->hasTable($table)) {
+                $this->warn("⚠️  Tabel '{$table}' tidak ditemukan.");
+                return [];
+            }
+
             $columns = $schema->getColumnListing($table);
 
-            // Optional: bisa di-exclude kolom auto/umum
+            // Exclude common auto-generated columns
             return collect($columns)
                 ->reject(fn($col) => in_array($col, ['id', 'created_at', 'updated_at', 'deleted_at']))
                 ->values()
                 ->all();
         } catch (\Throwable $e) {
             $this->warn("⚠️  Gagal mendapatkan kolom dari model: {$e->getMessage()}");
-
             return [];
         }
     }
@@ -96,14 +127,15 @@ class MakeFilamentSchemaResourceCommand extends Command
 
         if ($this->option('generate') && $modelClass) {
             $columns = $this->getModelColumns($modelClass);
-            $fieldsCode = collect($columns)->map(function ($column) {
-                $label = Str::of($column)->replace('_id', '')->replace('_', ' ')->title();
+            if (!empty($columns)) {
+                $fieldsCode = collect($columns)->map(function ($column) {
+                    $label = Str::of($column)->replace('_id', '')->replace('_', ' ')->title();
 
-                if (Str::endsWith($column, '_id')) {
-                    $relation = Str::beforeLast($column, '_id');
-                    $labelColumn = 'id'; // <- sesuai permintaan, default ke 'id'
+                    if (Str::endsWith($column, '_id')) {
+                        $relation = Str::beforeLast($column, '_id');
+                        $labelColumn = 'id'; // Default to 'id' as requested
 
-                    return <<<PHP
+                        return <<<PHP
                         Forms\\Components\\Select::make('{$column}')
                             ->label(__('{$label}'))
                             ->relationship('{$relation}', '{$labelColumn}')
@@ -112,14 +144,15 @@ class MakeFilamentSchemaResourceCommand extends Command
                             ->native(false)
                             ->required()
                     PHP;
-                }
+                    }
 
-                return <<<PHP
+                    return <<<PHP
                     Forms\\Components\\TextInput::make('{$column}')
                         ->label(__('{$label}'))
                         ->required()
                 PHP;
-            })->implode(",\n\n            ");
+                })->implode(",\n\n            ");
+            }
         }
 
         $content = $this->renderStub('form-schema.stub', [
@@ -141,10 +174,12 @@ class MakeFilamentSchemaResourceCommand extends Command
 
         if ($this->option('generate') && $modelClass) {
             $columns = $this->getModelColumns($modelClass);
-            $columnsCode = collect($columns)->map(function ($column) {
-                return "Tables\\Columns\\TextColumn::make('{$column}')"
-                    . "->label(__('" . Str::headline($column) . "'))";
-            })->implode(",\n            ");
+            if (!empty($columns)) {
+                $columnsCode = collect($columns)->map(function ($column) {
+                    return "Tables\\Columns\\TextColumn::make('{$column}')"
+                        . "->label(__('" . Str::headline($column) . "'))";
+                })->implode(",\n            ");
+            }
         }
 
         $content = $this->renderStub('table-schema.stub', [
@@ -171,7 +206,6 @@ class MakeFilamentSchemaResourceCommand extends Command
         ]);
 
         $this->writeFile($resourcePath, $content);
-
         $this->generateResourcePages($name, $modelName);
     }
 
@@ -201,8 +235,7 @@ class MakeFilamentSchemaResourceCommand extends Command
         $stubPath = base_path("stubs/filament-resource/{$stubFile}");
 
         if (! $this->files->exists($stubPath)) {
-            $this->error("Stub not found: {$stubPath}");
-
+            $this->error("❌ Stub not found: {$stubPath}");
             return '';
         }
 

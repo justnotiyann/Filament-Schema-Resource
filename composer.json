@@ -3,6 +3,14 @@
     "description": "Artisan command to generate Filament form & table schema files based on Eloquent model.",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "laravel",
+        "filament",
+        "artisan",
+        "generator",
+        "schema"
+    ],
+    "homepage": "https://github.com/justnotiyann/filament-schema-resource",
     "authors": [
         {
             "name": "justnotiyann",
@@ -14,6 +22,11 @@
             "Iyan\\FilamentSchemaResource\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Iyan\\FilamentSchemaResource\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -23,8 +36,26 @@
     },
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^10|^11",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/filesystem": "^10.0|^11.0",
+        "illuminate/support": "^10.0|^11.0",
         "filament/filament": "^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
