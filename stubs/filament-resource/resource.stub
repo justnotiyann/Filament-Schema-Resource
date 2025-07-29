@@ -31,7 +31,6 @@ class {{resourceName}}Resource extends Resource
         return $table
             ->defaultSort('updated_at', 'desc')
             ->columns({{resourceName}}TableSchema::getTableColumns())
-            ->columns({{resourceName}}TableSchema::getTableFields())
             ->filters({{resourceName}}TableSchema::getTableFilters())
             ->actions({{resourceName}}TableSchema::getTableActions())
             ->bulkActions({{resourceName}}TableSchema::getTableBulkActions())
