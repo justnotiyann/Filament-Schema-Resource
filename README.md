@@ -13,7 +13,7 @@ Artisan command package to generate **Filament Resource** schema files (Form & T
 ## 📦 Installation via Packagist
 
 ```bash
-composer require iyan/filament-schema-resource
+composer require justnotiyann/filament-schema-resource
 ```
 
 Package akan otomatis terdiscovery oleh Laravel.
@@ -59,7 +59,7 @@ Ini akan copy stubs ke `stubs/` folder di proyek Laravel kamu, dan kamu bisa uba
 Kemudian:
 
 ```bash
-composer require iyan/filament-schema-resource:dev-main
+composer require justnotiyann/filament-schema-resource:dev-main
 ```
 
 ## 📜 License
