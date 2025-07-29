@@ -229,7 +229,7 @@ class MakeFilamentSchemaResourceCommand extends Command
 
     protected function renderStub(string $stubFile, array $replacements): string
     {
-        $stubPath = __DIR__ . "/../stubs/{$stubFile}";
+        $stubPath = __DIR__ . "/../stubs/filament-resource/{$stubFile}";
 
         if (! file_exists($stubPath)) {
             $this->error("Stub not found: {$stubPath}");
