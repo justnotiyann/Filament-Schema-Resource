@@ -15,7 +15,7 @@ class {{resourceName}}Resource extends Resource
 {
     protected static ?string $model = {{modelName}}::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
 
     protected static ?string $modelLabel = '{{singularLabel}}';
 
@@ -28,9 +28,14 @@ class {{resourceName}}Resource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns(
-            {{resourceName}}TableSchema::getTableColumns()
-        )->defaultSort('updated_at', 'desc');
+        return $table
+            ->defaultSort('updated_at', 'desc')
+            ->columns({{resourceName}}TableSchema::getTableColumns())
+            ->columns({{resourceName}}TableSchema::getTableFields())
+            ->filters({{resourceName}}TableSchema::getTableFilters())
+            ->actions({{resourceName}}TableSchema::getTableActions())
+            ->bulkActions({{resourceName}}TableSchema::getTableBulkActions())
+            ->headerActions({{resourceName}}TableSchema::getTableHeaderActions());
     }
 
     public static function getPages(): array

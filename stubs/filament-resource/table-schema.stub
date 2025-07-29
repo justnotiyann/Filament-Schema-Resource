@@ -12,4 +12,30 @@ class {{className}}
             {{tableColumns}}
         ];
     }
+
+    public static function getTableHeaderActions()
+    {
+        return [];
+    }
+
+    public static function getTableBulkActions()
+    {
+        return [];
+    }
+
+    public static function getTableActions()
+    {
+        return [
+            Tables\Actions\EditAction::make()
+            ->size('xs')
+            ->button()
+            ->color('warning')
+            ,
+        ];
+    }
+
+    public static function getTableFilters()
+    {
+        return [];
+    }
 }
