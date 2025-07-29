@@ -1,6 +1,6 @@
 <?php
 
-namespace Iyan\FilamentSchemaResource\Console;
+namespace Iyan\FilamentSchemaResource\Console;  // <- PENTING: Namespace harus ini!
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

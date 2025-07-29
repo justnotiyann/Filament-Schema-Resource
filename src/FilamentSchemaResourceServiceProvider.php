@@ -20,7 +20,7 @@ class FilamentSchemaResourceServiceProvider extends ServiceProvider
             ]);
 
             $this->publishes([
-                __DIR__.'/../stubs' => base_path('stubs'),
+                __DIR__ . '/../stubs' => base_path('stubs'),
             ], 'filament-schema-stubs');
         }
     }
