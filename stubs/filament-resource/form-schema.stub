@@ -2,14 +2,14 @@
 
 namespace {{namespace}};
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms;
 
 class {{className}}
 {
     public static function getFormFields(): array
     {
         return [
-            TextInput::make('name')->required()->maxLength(255),
+            {{formFields}}
         ];
     }
 }

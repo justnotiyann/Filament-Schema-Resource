@@ -2,14 +2,14 @@
 
 namespace {{namespace}};
 
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables;
 
 class {{className}}
 {
     public static function getTableColumns(): array
     {
         return [
-            TextColumn::make('name')->searchable()->sortable(),
+            {{tableColumns}}
         ];
     }
 }
