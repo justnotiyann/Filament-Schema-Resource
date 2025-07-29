@@ -1,0 +1,29 @@
+{
+    "name": "justnotiyann/filament-schema-resource",
+    "description": "Artisan command to generate Filament form & table schema files based on Eloquent model.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "justnotiyann",
+            "email": "muhammadfitrian0712@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Iyan\\FilamentSchemaResource\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Iyan\\FilamentSchemaResource\\FilamentSchemaResourceServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10|^11",
+        "filament/filament": "^3.0"
+    }
+}

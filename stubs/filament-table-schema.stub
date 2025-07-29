@@ -1,0 +1,15 @@
+<?php
+
+namespace {{namespace}};
+
+use Filament\Tables\Columns\TextColumn;
+
+class {{className}}
+{
+    public static function getTableColumns(): array
+    {
+        return [
+            TextColumn::make('name')->searchable()->sortable(),
+        ];
+    }
+}

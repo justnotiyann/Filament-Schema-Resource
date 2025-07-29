@@ -1,0 +1,15 @@
+<?php
+
+namespace {{namespace}};
+
+use Filament\Forms\Components\TextInput;
+
+class {{className}}
+{
+    public static function getFormFields(): array
+    {
+        return [
+            TextInput::make('name')->required()->maxLength(255),
+        ];
+    }
+}
