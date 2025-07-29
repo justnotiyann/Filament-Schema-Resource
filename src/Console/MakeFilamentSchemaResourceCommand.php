@@ -24,6 +24,12 @@ class MakeFilamentSchemaResourceCommand extends Command
         parent::__construct();
     }
 
+    protected function getStub(string $stubName): string
+    {
+        return file_get_contents(__DIR__ . "/../stubs/{$stubName}.stub");
+    }
+
+
     protected function validateStubs(): void
     {
         $requiredStubs = [
@@ -221,15 +227,14 @@ class MakeFilamentSchemaResourceCommand extends Command
 
     protected function renderStub(string $stubFile, array $replacements): string
     {
-        $stubPath = base_path("stubs/filament-resource/{$stubFile}");
+        $stubPath = __DIR__ . "/../stubs/{$stubFile}";
 
-        if (! $this->files->exists($stubPath)) {
+        if (! file_exists($stubPath)) {
             $this->error("Stub not found: {$stubPath}");
-
             throw new \RuntimeException("Stub not found: {$stubPath}");
         }
 
-        $stub = $this->files->get($stubPath);
+        $stub = file_get_contents($stubPath);
 
         foreach ($replacements as $key => $value) {
             $stub = str_replace('{{' . $key . '}}', $value, $stub);
@@ -237,6 +242,7 @@ class MakeFilamentSchemaResourceCommand extends Command
 
         return $stub;
     }
+
 
     protected function writeFile(string $path, string $content): void
     {

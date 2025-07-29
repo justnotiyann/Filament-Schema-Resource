@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Filament\Resources\{{resourceName}}Resource\Pages;
+
+use App\Filament\Resources\{{resourceName}}Resource;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Actions;
+
+
+class Edit{{resourceName}} extends EditRecord
+{
+    protected static string $resource = {{resourceName}}Resource::class;
+
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            // Actions\DeleteAction::make()
+        ];
+    }
+}

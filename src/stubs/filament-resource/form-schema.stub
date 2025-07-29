@@ -1,0 +1,15 @@
+<?php
+
+namespace {{namespace}};
+
+use Filament\Forms;
+
+class {{className}}
+{
+    public static function getFormFields(): array
+    {
+        return [
+            {{formFields}}
+        ];
+    }
+}
